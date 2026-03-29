@@ -2,22 +2,18 @@ from django.db import models
 
 
 # Create your models here.
-class Client(models.Model):
+class Recipient(models.Model):
     """Модель для получателей рассылки (клиентов)"""
 
     # Поле для email с уникальностью
-    email = models.EmailField(max_length=255, unique=True, verbose_name="Почтовый адрес")
+    email = models.CharField(max_length=255, unique=True)
     # Фамилия
-    last_name = models.CharField(max_length=100, verbose_name="Фамилия")
-    # Имя
-    first_name = models.CharField(max_length=100, verbose_name="Имя")
-    # Отчество (необязательным)
-    middle_name = models.CharField(max_length=100, verbose_name="Отчество", blank=True, null=True)
+    full_name = models.CharField(max_length=255, verbose_name="ФИО")
     # Комментарий
     post = models.TextField(verbose_name="Комментарий", null=True, blank=True)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return self.full_name
 
     class Meta:
         verbose_name = "Клиент"
