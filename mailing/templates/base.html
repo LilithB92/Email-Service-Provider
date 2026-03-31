@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %} Cover Template for Bootstrap {% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+       {% load static %}
+    <link href="{% static '/mailing/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static '/mailing/css/cover.css' %}" rel="stylesheet">
+  </head>
+
+  <body class="text-center">
+
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+      <header class="masthead mb-auto">
+        <div class="inner">
+          <h3 class="masthead-brand">Cover</h3>
+          {% include 'includes/menu.html'%}
+        </div>
+      </header>
+
+      <main role="main" class="inner cover">
+        {% block content %}{% endblock %}
+      </main>
+
+      {% include 'includes/footer.html'%}
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static '/mailing/js/jquery-3.2.1.slim.min.js' %}" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="{% static '/mailing/js/popper.min.js' %}"></script>
+    <script src="{% static '/mailing/js/bootstrap.min.js' %}"></script>
+  </body>
+</html>
