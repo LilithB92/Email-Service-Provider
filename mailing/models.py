@@ -18,5 +18,3 @@ class Recipient(models.Model):
     class Meta:
         verbose_name = "Клиент"
         verbose_name_plural = "Клиенты"
-
-
