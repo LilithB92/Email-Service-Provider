@@ -12,7 +12,7 @@ from mailing.models import Recipient
 # Create your views here.
 class RecipientList(ListView):
     model = Recipient
-    context_object_name = "recipients"
+    paginate_by = 3
 
 
 # class RecipientDetailView(DetailView):
