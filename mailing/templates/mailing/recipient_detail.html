@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{{object.name}}{% endblock %}
+{% block title %}{{object.full_name}}{% endblock %}
 
 {% block content %}
 <div class = "container">
@@ -12,14 +12,12 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <a href="{%  url 'mailing:recipient_list' %}" class="btn btn-sm btn-outline-primary" >Назад</a>
-                  {% if product.owner == user %}
-                      <a href="#"  class="btn btn-sm btn-outline-secondary">
-                        Редактировать
-                      </a>
-                      <a href="#"  class="btn btn-sm btn-outline-danger">
-                        Удалить
-                      </a>
-                  {% endif %}
+                  <a href="#"  class="btn btn-sm btn-outline-secondary">
+                    Редактировать
+                  </a>
+                  <a href="#"  class="btn btn-sm btn-outline-danger">
+                    Удалить
+                  </a>
                 </div>
               </div>
           </div>

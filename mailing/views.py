@@ -12,7 +12,7 @@ from mailing.models import Recipient
 # Create your views here.
 class RecipientList(ListView):
     model = Recipient
-    context_object_name = 'recipients'
+    context_object_name = "recipients"
     paginate_by = 3
 
 
@@ -31,8 +31,7 @@ class RecipientUpdateView(UpdateView):
     form_class = RecipientForm
     success_url = reverse_lazy("mailing:recipient_list")
 
-#
-#
-# class RecipientDeleteView(DeleteView):
-#     model = Recipient
-#     success_url = reverse_lazy("mailing:recipients_list")
+
+class RecipientDeleteView(DeleteView):
+    model = Recipient
+    success_url = reverse_lazy("mailing:recipient_list")
