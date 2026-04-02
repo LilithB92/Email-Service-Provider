@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Клиенты{% endblock %}
+{% block title %}Сообщения{% endblock %}
 {% block content %}
 <div class="row">
 {% for message in  messages %}
@@ -9,7 +9,7 @@
       <div class="card-body">
         <h5 class="card-title">Тема письма: {{message.subject}}</h5>
         <p class="card-text">Тело письма: {{message.text|slice:":100"}}...</p>
-          <a href="#" class="btn btn-sm btn-outline-primary" >Посмотреть</a>
+          <a href="{%  url 'mailing:message_detail' message.pk %}" class="btn btn-sm btn-outline-primary" >Посмотреть</a>
 
               <a href="#"  class="btn btn-sm btn-outline-secondary">
                 Редактировать

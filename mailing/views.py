@@ -44,3 +44,8 @@ class MessageList(ListView):
     model = Message
     context_object_name = "messages"
     paginate_by = 2
+
+
+class MessageDetailView(DetailView):
+    model =Message
+
