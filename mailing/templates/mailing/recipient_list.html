@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}Клиенты{% endblock %}
 {% block content %}
-{% for recipient in  recipients %}
 <div class="row">
+{% for recipient in  recipients %}
+
   <div class="col-sm-6">
     <div class="card bg-dark text-white">
       <div class="card-body">
@@ -20,8 +21,9 @@
       </div>
     </div>
   </div>
-</div>
+
 {% endfor %}
+    </div>
 
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">

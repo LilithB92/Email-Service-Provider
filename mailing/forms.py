@@ -9,7 +9,7 @@ from .models import Recipient
 class RecipientForm(forms.ModelForm):
     class Meta:
         model = Recipient
-        exclude = ["email"]
+        fields = ['email', 'full_name', 'post']
 
 
     def __init__(self, *args, **kwargs):
