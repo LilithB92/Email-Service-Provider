@@ -2,8 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.db.models.fields import BooleanField
 
-from .models import Recipient
-
+from .models import Recipient, Message
 
 
 class RecipientForm(forms.ModelForm):
@@ -27,4 +26,18 @@ class RecipientForm(forms.ModelForm):
         if '@' not in email:
             raise ValidationError("email не корректно")
         return email
+
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['subject', 'text']
+
+    def __init__(self, *args, **kwargs):
+        super(self,MessageForm).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if isinstance(field, BooleanField):
+                field.widget.attrs["class"] = "form-check-input"
+            else:
+                field.widget.attrs["class"] = "form-control"
 

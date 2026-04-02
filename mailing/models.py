@@ -22,7 +22,8 @@ class Recipient(models.Model):
 
 
 class Message(models.Model):
-    """Модель для сообщения """
+    """Модель для сообщения"""
+
     subject = models.CharField(max_length=255, verbose_name="Тема письма")
     text = models.TextField(verbose_name="Тело письма")
 
@@ -33,4 +34,3 @@ class Message(models.Model):
         verbose_name = "Сообщение"
         verbose_name_plural = "сообщения"
         ordering = ["subject"]
-

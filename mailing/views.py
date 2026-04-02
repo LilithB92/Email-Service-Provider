@@ -6,11 +6,14 @@ from django.views.generic import ListView
 from django.views.generic import UpdateView
 
 from mailing.forms import RecipientForm
+from mailing.models import Message
 from mailing.models import Recipient
 
 
 # Create your views here.
 class RecipientList(ListView):
+    """"""
+
     model = Recipient
     context_object_name = "recipients"
     paginate_by = 3
@@ -35,3 +38,9 @@ class RecipientUpdateView(UpdateView):
 class RecipientDeleteView(DeleteView):
     model = Recipient
     success_url = reverse_lazy("mailing:recipient_list")
+
+
+class MessageList(ListView):
+    model = Message
+    context_object_name = "messages"
+    paginate_by = 2
