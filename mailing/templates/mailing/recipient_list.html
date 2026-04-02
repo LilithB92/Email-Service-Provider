@@ -1,31 +1,28 @@
 {% extends 'base.html' %}
-{% block title %}{% endblock %}
+{% block title %}Клиенты{% endblock %}
 {% block content %}
-<div class="container">
-    <div class="row text-center  justify-content-center">
-        {% for recipient in  page_obj %}
-        <div class="col-4 me-3">
-            <div class="card mb-4 box-shadow">
-                <div class="card" style="width: 24rem;">
-                    <h5 class="card-title  text-center">Имя: {{recipient.full_name}}</h5>
-                    <p class="card-text">Комментарий: {{recipient.description|slice:":100"}}...</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                      {% if product.owner == user %}
-                          <a href="{%  url  'catalog:product_update' product.pk  %}"  class="btn btn-sm btn-outline-secondary">
-                            Редактировать
-                          </a>
-                          <a href="{%  url  'catalog:product_delete' product.pk  %}"  class="btn btn-sm btn-outline-danger">
-                            Удалить
-                          </a>
-                      {% endif %}
-                    </div>
-                          <small class="text-body-secondary">{{blog.viewcount}} views</small>
-                </div>
-            </div>
-        </div>
+{% for recipient in  recipients %}
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card bg-dark text-white">
+      <div class="card-body">
+        <h5 class="card-title">Имя: {{recipient.full_name}}</h5>
+        <p class="card-text">Комментарий: {{recipient.post|slice:":100"}}...</p>
+          <a href="{%  url 'mailing:recipient_detail' recipient.pk %}" class="btn btn-sm btn-outline-primary" >Посмотреть</a>
+          {% if product.owner == user %}
+              <a href="#"  class="btn btn-sm btn-outline-secondary">
+                Редактировать
+              </a>
+              <a href="#"  class="btn btn-sm btn-outline-danger">
+                Удалить
+              </a>
+          {% endif %}
+      </div>
     </div>
-    {% endfor %}
+  </div>
 </div>
+{% endfor %}
+
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
           <li class="page-item  {% if not  page_obj.has_previous %} disabled {% endif %} ">
