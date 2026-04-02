@@ -34,7 +34,7 @@ class MessageForm(forms.ModelForm):
         fields = ['subject', 'text']
 
     def __init__(self, *args, **kwargs):
-        super(self,MessageForm).__init__(*args, **kwargs)
+        super(MessageForm,self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             if isinstance(field, BooleanField):
                 field.widget.attrs["class"] = "form-check-input"

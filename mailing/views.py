@@ -5,6 +5,7 @@ from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import UpdateView
 
+from mailing.forms import MessageForm
 from mailing.forms import RecipientForm
 from mailing.models import Message
 from mailing.models import Recipient
@@ -47,5 +48,16 @@ class MessageList(ListView):
 
 
 class MessageDetailView(DetailView):
-    model =Message
+    model = Message
 
+
+class MessageCreateView(CreateView):
+    model = Message
+    form_class = MessageForm
+    success_url = reverse_lazy("mailing:message_list")
+
+
+class MessageUpdateView(UpdateView):
+    model = Message
+    form_class = MessageForm
+    success_url = reverse_lazy("mailing:message_list")
