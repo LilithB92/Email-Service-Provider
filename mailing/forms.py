@@ -60,5 +60,7 @@ class MailingForm(forms.ModelForm):
         start_time = cleaned_data.get("start_time")
         end_time = cleaned_data.get("end_time")
         if start_time >= end_time:
-            raise forms.ValidationError("Дата и время начала отправки не может быть после даты и времени окончания отправки")
+            raise forms.ValidationError(
+                "Дата и время начала отправки не может быть после даты и времени окончания отправки"
+            )
         return cleaned_data

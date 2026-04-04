@@ -1,4 +1,5 @@
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import CreateView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
@@ -7,7 +8,8 @@ from django.views.generic import UpdateView
 
 from mailing.forms import MessageForm
 from mailing.forms import RecipientForm
-from mailing.models import Message, Mailing
+from mailing.models import Mailing
+from mailing.models import Message
 from mailing.models import Recipient
 
 
@@ -70,9 +72,24 @@ class MessageDeleteView(DeleteView):
 
 class MailingList(ListView):
     model = Mailing
-    context_object_name = 'mailings'
+    context_object_name = "mailings"
     paginate = 2
 
 
 class MailingDetailView(DetailView):
     model = Mailing
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        self.update_status(obj)
+        return obj
+
+    def update_status(self, object):
+        current_time = timezone.now()
+        if object.end_time <= current_time:
+            object.status = "completed"
+        elif object.start_time <= current_time <= object.end_time:
+            object.status = "running"
+        else:
+            object.status = "created"
+        object.save()
