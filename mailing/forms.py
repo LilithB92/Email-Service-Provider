@@ -58,5 +58,5 @@ class MailingForm(forms.ModelForm):
     def clean(self):
         # Always call super().clean() to maintain parent validation
         super().clean()
-        if self.start_time > self.end_time:
+        if self.start_time >= self.end_time:
             raise ValidationError("Дата и время начала отправки не может быть после даты и времени окончания отправки")
