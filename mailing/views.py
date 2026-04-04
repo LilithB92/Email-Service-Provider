@@ -108,3 +108,8 @@ class MailingUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("mailing:mailing_detail", kwargs={"pk": self.object.pk})
+
+
+class MailingDeleteView(DeleteView):
+    model = Mailing
+    success_url = reverse_lazy("mailing:mailing_list")
