@@ -72,3 +72,7 @@ class MailingList(ListView):
     model = Mailing
     context_object_name = 'mailings'
     paginate = 2
+
+
+class MailingDetailView(DetailView):
+    model = Mailing

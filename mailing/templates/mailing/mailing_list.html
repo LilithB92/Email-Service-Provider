@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}Клиенты{% endblock %}
+{% block title %}Рассылки{% endblock %}
 {% block content %}
     <div class="container">
     {% for mailing in  mailings %}
-    <div class="row">
+    <div class="justify-content-center">
     <div class="col-sm-12">
     <div class="card bg-dark text-white">
       <div class="card-body">
@@ -11,7 +11,7 @@
           <hr>
           <p class="card-text">Начала отправки - {{mailing.start_time}} </p>
           <p class="card-text">Конец отправки - {{mailing.end_time}}</p>
-          <a href="#" class="btn btn-sm btn-outline-primary" >Посмотреть</a>
+          <a href="{%  url 'mailing:mailing_detail' mailing.pk %}" class="btn btn-sm btn-outline-primary" >Посмотреть</a>
 
           <a href="#"  class="btn btn-sm btn-outline-secondary">
             Редактировать
