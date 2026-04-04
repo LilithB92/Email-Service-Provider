@@ -19,4 +19,4 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(Mailing)
 class MailingAdmin(admin.ModelAdmin):
-    list_display = ("start_time", "end_time", "status", "message")
+    list_display = ("start_time", "end_time", "message")

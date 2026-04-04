@@ -2,14 +2,15 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.db.models.fields import BooleanField
 
-from .models import Recipient, Message
+from .models import Mailing
+from .models import Message
+from .models import Recipient
 
 
 class RecipientForm(forms.ModelForm):
     class Meta:
         model = Recipient
-        fields = ['email', 'full_name', 'post']
-
+        fields = ["email", "full_name", "post"]
 
     def __init__(self, *args, **kwargs):
         super(RecipientForm, self).__init__(*args, **kwargs)
@@ -20,10 +21,9 @@ class RecipientForm(forms.ModelForm):
                 field.widget.attrs["class"] = "form-control"
                 field.widget.attrs["placeholder"] = field.help_text
 
-
     def clean_email(self):
         email = self.cleaned_data.get("email")
-        if '@' not in email:
+        if "@" not in email:
             raise ValidationError("email не корректно")
         return email
 
@@ -31,13 +31,32 @@ class RecipientForm(forms.ModelForm):
 class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
-        fields = ['subject', 'text']
+        fields = ["subject", "text"]
 
     def __init__(self, *args, **kwargs):
-        super(MessageForm,self).__init__(*args, **kwargs)
+        super(MessageForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             if isinstance(field, BooleanField):
                 field.widget.attrs["class"] = "form-check-input"
             else:
                 field.widget.attrs["class"] = "form-control"
 
+
+class MailingForm(forms.ModelForm):
+    class Meta:
+        model = Mailing
+        fields = ("start_time", "end_time", "message")
+
+    def __init__(self, *args, **kwargs):
+        super(MailingForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if isinstance(field, BooleanField):
+                field.widget.attrs["class"] = "form-check-input"
+            else:
+                field.widget.attrs["class"] = "form-control"
+
+    def clean(self):
+        # Always call super().clean() to maintain parent validation
+        super().clean()
+        if self.start_time > self.end_time:
+            raise ValidationError("Дата и время начала отправки не может быть после даты и времени окончания отправки")
