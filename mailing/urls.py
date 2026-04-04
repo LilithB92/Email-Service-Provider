@@ -1,7 +1,8 @@
 from django.urls import path
 
 from mailing.apps import MailingConfig
-from mailing.views import MessageCreateView, MessageDeleteView
+from mailing.views import MessageCreateView
+from mailing.views import MessageDeleteView
 from mailing.views import MessageDetailView
 from mailing.views import MessageList
 from mailing.views import MessageUpdateView

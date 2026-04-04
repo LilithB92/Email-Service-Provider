@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from mailing.models import Mailing
 from mailing.models import Message
 from mailing.models import Recipient
 
@@ -14,3 +15,8 @@ class RecipientAdmin(admin.ModelAdmin):
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     list_display = ("subject", "text")
+
+
+@admin.register(Mailing)
+class MailingAdmin(admin.ModelAdmin):
+    list_display = ("start_time", "end_time", "status", "message")

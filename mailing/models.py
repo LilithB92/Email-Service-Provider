@@ -16,8 +16,8 @@ class Recipient(models.Model):
         return self.full_name
 
     class Meta:
-        verbose_name = "Клиент"
-        verbose_name_plural = "Клиенты"
+        verbose_name = "Получатель"
+        verbose_name_plural = "Получатели"
         ordering = ["pk"]
 
 
@@ -34,3 +34,25 @@ class Message(models.Model):
         verbose_name = "Сообщение"
         verbose_name_plural = "сообщения"
         ordering = ["subject"]
+
+
+class Mailing(models.Model):
+    """Модель для рассылки"""
+
+    STATUS_CHOICES = [
+        ("created", "Создана"),
+        ("running", "Запущена"),
+        ("completed", "Завершена"),
+    ]
+    start_time = models.DateTimeField(verbose_name="Дата и время первой отправки")
+    end_time = models.DateTimeField(verbose_name="Дата и время окончания отправки")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="created", verbose_name="Статус")
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name="Сообщение")
+    recipient = models.ManyToManyField(Recipient, verbose_name="Получатели")
+
+    def __str__(self):
+        return f"Рассылка {self.pk}"
+
+    class Meta:
+        verbose_name = "Рассылка"
+        verbose_name_plural = "Рассылки"
