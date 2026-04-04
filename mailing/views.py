@@ -7,7 +7,7 @@ from django.views.generic import UpdateView
 
 from mailing.forms import MessageForm
 from mailing.forms import RecipientForm
-from mailing.models import Message
+from mailing.models import Message, Mailing
 from mailing.models import Recipient
 
 
@@ -66,3 +66,9 @@ class MessageUpdateView(UpdateView):
 class MessageDeleteView(DeleteView):
     model = Message
     success_url = reverse_lazy("mailing:message_list")
+
+
+class MailingList(ListView):
+    model = Mailing
+    context_object_name = 'mailings'
+    paginate = 2

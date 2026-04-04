@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}Клиенты{% endblock %}
 {% block content %}
-<div class="row">
-{% for recipient in  recipients %}
 
-  <div class="col-sm-8">
-    <div class="card bg-dark text-white">
-      <div class="card-body">
-        <h5 class="card-title">Имя: {{recipient.full_name}}</h5>
-        <p class="card-text">Комментарий: {{recipient.post|slice:":100"}}...</p>
-          <a href="{%  url 'mailing:recipient_detail' recipient.pk %}" class="btn btn-sm btn-outline-primary" >Посмотреть</a>
+{% for recipient in  recipients %}
+  <div class="row">
+      <div class="col-sm-8">
+        <div class="card bg-dark text-white">
+          <div class="card-body">
+            <h5 class="card-title">Имя: {{recipient.full_name}}</h5>
+            <p class="card-text">Комментарий: {{recipient.post|slice:":100"}}...</p>
+              <a href="{%  url 'mailing:recipient_detail' recipient.pk %}" class="btn btn-sm btn-outline-primary" >Посмотреть</a>
 
               <a href="{%  url 'mailing:recipient_update' recipient.pk %}"  class="btn btn-sm btn-outline-secondary">
                 Редактировать
@@ -17,13 +17,12 @@
               <a href="{%  url 'mailing:recipient_delete' recipient.pk %}"  class="btn btn-sm btn-outline-danger">
                 Удалить
               </a>
-
+          </div>
+        </div>
       </div>
-    </div>
   </div>
-
 {% endfor %}
-    </div>
+
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
           <li class="page-item  {% if not  page_obj.has_previous %} disabled {% endif %} ">

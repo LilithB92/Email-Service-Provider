@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Клиенты{% endblock %}
+{% block content %}
+    <div class="container">
+    {% for mailing in  mailings %}
+    <div class="row">
+    <div class="col-sm-12">
+    <div class="card bg-dark text-white">
+      <div class="card-body">
+          <h5 class="card-title">{{ mailing.message }} <small class="text-body-secondary">{{ mailing.status }}</small></h5>
+          <hr>
+          <p class="card-text">Начала отправки - {{mailing.start_time}} </p>
+          <p class="card-text">Конец отправки - {{mailing.end_time}}</p>
+          <a href="#" class="btn btn-sm btn-outline-primary" >Посмотреть</a>
+
+          <a href="#"  class="btn btn-sm btn-outline-secondary">
+            Редактировать
+          </a>
+          <a href="#"  class="btn btn-sm btn-outline-danger">
+            Удалить
+          </a>
+      </div>
+    </div>
+    </div>
+    </div>
+    {% endfor %}
+    </div>
+
+    <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item  {% if not  page_obj.has_previous %} disabled {% endif %} ">
+        <a  href="?page={{ request.GET.page|add:-1}}" class="page-link">Previous</a>
+      </li>
+      {% for  page in page_obj.paginator.page_range %}
+          <li class="page-item  ">
+            <a  href="?page={{ page }}" class="page-link">
+                {{ page }}
+            </a>
+          </li>
+      {% endfor %}
+        <li class="page-item {% if not page_obj.has_next %} disabled {% endif %} ">
+          <a class="page-link" href="?page={{ request.GET.page|add:1}}">Next</a>
+        </li>
+    </ul>
+    </nav>
+    {% endblock %}

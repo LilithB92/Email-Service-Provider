@@ -56,7 +56,9 @@ class MailingForm(forms.ModelForm):
                 field.widget.attrs["class"] = "form-control"
 
     def clean(self):
-        # Always call super().clean() to maintain parent validation
-        super().clean()
-        if self.start_time >= self.end_time:
-            raise ValidationError("Дата и время начала отправки не может быть после даты и времени окончания отправки")
+        cleaned_data = super().clean()
+        start_time = cleaned_data.get("start_time")
+        end_time = cleaned_data.get("end_time")
+        if start_time >= end_time:
+            raise forms.ValidationError("Дата и время начала отправки не может быть после даты и времени окончания отправки")
+        return cleaned_data
