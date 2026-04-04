@@ -46,6 +46,11 @@ class MailingForm(forms.ModelForm):
     class Meta:
         model = Mailing
         fields = ("start_time", "end_time", "message")
+        widgets = {
+            # Виджет 'date' вызывает календарь браузера
+            "start_time": forms.DateInput(attrs={"type": "date"}),
+            "end_time": forms.DateInput(attrs={"type": "date"}),
+        }
 
     def __init__(self, *args, **kwargs):
         super(MailingForm, self).__init__(*args, **kwargs)

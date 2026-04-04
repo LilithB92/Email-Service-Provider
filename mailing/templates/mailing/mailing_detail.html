@@ -11,7 +11,7 @@
                   <p class="card-text">Конец отправки - {{mailing.end_time}}</p>
                   <a href="{%  url 'mailing:mailing_list' %}" class="btn btn-sm btn-outline-primary" >Назад</a>
 
-                  <a href="#"  class="btn btn-sm btn-outline-secondary">
+                  <a href="{%  url 'mailing:mailing_update' mailing.pk %}"  class="btn btn-sm btn-outline-secondary">
                     Редактировать
                   </a>
                   <a href="#"  class="btn btn-sm btn-outline-danger">

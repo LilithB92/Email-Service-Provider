@@ -6,6 +6,7 @@ from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import UpdateView
 
+from mailing.forms import MailingForm
 from mailing.forms import MessageForm
 from mailing.forms import RecipientForm
 from mailing.models import Mailing
@@ -88,8 +89,22 @@ class MailingDetailView(DetailView):
         current_time = timezone.now()
         if object.end_time <= current_time:
             object.status = "completed"
-        elif object.start_time <= current_time <= object.end_time:
+        elif object.start_time < current_time < object.end_time:
             object.status = "running"
         else:
             object.status = "created"
         object.save()
+
+
+class MailingCreateView(CreateView):
+    model = Mailing
+    form_class = MailingForm
+    success_url = reverse_lazy("mailing:mailing_list")
+
+
+class MailingUpdateView(UpdateView):
+    model = Mailing
+    form_class = MailingForm
+
+    def get_success_url(self):
+        return reverse_lazy("mailing:mailing_detail", kwargs={"pk": self.object.pk})
