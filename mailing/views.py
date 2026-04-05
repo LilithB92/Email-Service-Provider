@@ -4,6 +4,7 @@ from django.views.generic import CreateView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic import ListView
+from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
 from mailing.forms import MailingForm
@@ -12,9 +13,21 @@ from mailing.forms import RecipientForm
 from mailing.models import Mailing
 from mailing.models import Message
 from mailing.models import Recipient
+from mailing.services import MailingRecipientService
 
 
 # Create your views here.
+class HomePageView(TemplateView):
+    template_name = "mailing/home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["count_mailings"] = MailingRecipientService.count_mailings()
+        context["count_recipients"] = MailingRecipientService.count_recipients()
+        context["active_mailings_count"] = MailingRecipientService.active_mailings_count()
+        return context
+
+
 class RecipientList(ListView):
     """"""
 
