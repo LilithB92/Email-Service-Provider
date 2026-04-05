@@ -29,8 +29,6 @@ class HomePageView(TemplateView):
 
 
 class RecipientList(ListView):
-    """"""
-
     model = Recipient
     context_object_name = "recipients"
     paginate_by = 3

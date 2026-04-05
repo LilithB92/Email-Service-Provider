@@ -124,6 +124,7 @@ USE_L18N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = 'users.CustomUser'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
@@ -134,10 +135,10 @@ STATICFILES_DIRS = [
     # если они располагаются вне приложений
     os.path.join(BASE_DIR, "static"),
 ]
-#
-# MEDIA_URL = "media/"
-# MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-#
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 # CACHE_ENABLED = True
 # if CACHE_ENABLED:
 #     CACHES = {
