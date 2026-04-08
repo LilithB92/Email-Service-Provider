@@ -1,11 +1,13 @@
 import secrets
 
+from django.contrib.auth import logout
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.views import View
+from django.views.generic import DetailView
 from django.views.generic.edit import CreateView
 
 from config.settings import EMAIL_HOST_USER
@@ -45,3 +47,12 @@ class ConfirmationEmailView(View):
         user.is_active = True
         user.save()
         return redirect(reverse("users:login"))
+
+
+class CustomUserDetailView(DetailView):
+    model = CustomUser
+
+
+def logout_view(request):
+    logout(request)
+    return redirect(reverse("users:login"))

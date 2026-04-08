@@ -1,0 +1,68 @@
+{% extends 'base.html' %}{% load my_tags %}
+{% block title %}{{object.username}}{% endblock %}
+{% block header %}{% endblock %}
+{% block content %}
+<section style="background-color: dark;">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card bg-dark text-white mb-4">
+          <div class="card-body text-center">
+              {% if object.avatar %}
+              <img src="{{ object.avatar |  media_filter }}" alt="avatar">
+              {% else %}
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+              {% endif %}
+              class="rounded-circle img-fluid" style="width: 150px;">
+            <h5 class="my-3">{{object.username}}</h5>
+            <div class="d-flex justify-content-center mb-2">
+              <a  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary" href="{% url 'mailing:home' %}">Home</a>
+              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Update</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-lg-8">
+        <div class="card bg-dark text-white mb-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Full Name</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{object.first_name}} {{object.last_name}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Email</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{object.email}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Phone</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{object.phone_number}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Country</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{object.country}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock %}

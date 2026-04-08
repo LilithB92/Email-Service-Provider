@@ -4,10 +4,25 @@
     <a class="nav-link" href="{%  url 'mailing:mailing_list' %}">Рассылки</a>
     <a class="nav-link me-3" href="{%  url 'mailing:message_list' %}">Сообщение</a>
      {% if user.is_authenticated %}
-            <form class="nav-link" method="post" action="{% url 'users:logout'%}" style="display:inline">
-                  {% csrf_token %}
-                <button type="submit" class="nav-link" style="display:inline"> Выход</button>
-            </form>
+         {% csrf_token %}
+         {% load my_tags %}
+
+    <div class="dropdown">
+          <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+              {% if object.avatar %}
+              <img src="{{ object.avatar |  media_filter }}" alt="avatar"  width="32" height="32" class="rounded-circle me-2">
+              {% else %}
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar" idth="32" height="32" class="rounded-circle me-2">
+              {% endif %}
+            <strong>{{user.username}}</strong>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownUser1">
+            <li><a class="dropdown-item" href="{% url 'users:profil' user.pk %}">profil</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'users:logout'%}">Выход</a></li>
+          </ul>
+        </div>
        {% else %}
              <form class="nav-link" method="post"  style="display:inline">
                 {% csrf_token %}
