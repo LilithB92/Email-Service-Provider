@@ -3,6 +3,7 @@ from django.urls import path
 
 from .apps import UsersConfig
 from .forms import CustomAuthenticationForm
+from .views import ConfirmationEmailView
 from .views import RegisterView
 
 app_name = UsersConfig.name
@@ -16,4 +17,5 @@ urlpatterns = [
         name="login",
     ),
     path("logout/", auth_views.LogoutView.as_view(next_page="users:login"), name="logout"),
+    path("email_confirm/<str:token>/", ConfirmationEmailView.as_view(), name="email_confirm"),
 ]
