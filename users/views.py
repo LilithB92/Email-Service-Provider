@@ -49,7 +49,7 @@ class ConfirmationEmailView(View):
         return redirect(reverse("users:login"))
 
 
-class CustomUserDetailView(DetailView):
+class ProfileDetailView(DetailView):
     model = CustomUser
 
 
