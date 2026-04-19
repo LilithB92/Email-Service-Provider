@@ -45,7 +45,7 @@ class MessageForm(forms.ModelForm):
 class MailingForm(forms.ModelForm):
     class Meta:
         model = Mailing
-        fields = ("start_time", "end_time", "message")
+        fields = ("start_time", "end_time", "message", "recipients")
         widgets = {
             # Виджет 'date' вызывает календарь браузера
             "start_time": forms.DateInput(attrs={"type": "date"}),

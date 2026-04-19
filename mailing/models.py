@@ -47,8 +47,8 @@ class Mailing(models.Model):
     start_time = models.DateTimeField(verbose_name="Дата и время первой отправки")
     end_time = models.DateTimeField(verbose_name="Дата и время окончания отправки")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="created", verbose_name="Статус")
-    message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name="Сообщение")
-    recipients = models.ManyToManyField(Recipient, verbose_name="Получатели")
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name="message")
+    recipients = models.ManyToManyField(Recipient, verbose_name="recipients")
 
     def __str__(self):
         return f"Рассылка {self.pk}"
@@ -63,7 +63,7 @@ class MailingAttempt(models.Model):
         ("success", "Успешно"),
         ("failure", "Не успешно"),
     ]
-    mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name="Рассылка")
+    mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name="mailing")
     attempt_time = models.DateTimeField(auto_now_add=True, verbose_name="Дата и время попытки")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, verbose_name="Статус")
     server_response = models.TextField(null=True, blank=True, verbose_name="Ответ почтового сервера")
