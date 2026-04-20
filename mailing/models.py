@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import CustomUser
+
 
 # Create your models here.
 class Recipient(models.Model):
@@ -11,6 +13,8 @@ class Recipient(models.Model):
     full_name = models.CharField(max_length=255, verbose_name="ФИО")
     # Комментарий
     post = models.TextField(verbose_name="Комментарий", null=True, blank=True)
+    # Владелец
+    owner = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, blank=True, null=True, verbose_name="owner")
 
     def __str__(self):
         return self.full_name
@@ -26,6 +30,8 @@ class Message(models.Model):
 
     subject = models.CharField(max_length=255, verbose_name="Тема письма")
     text = models.TextField(verbose_name="Тело письма")
+    # Владелец
+    owner = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, blank=True, null=True, verbose_name="owner")
 
     def __str__(self):
         return self.subject
@@ -49,6 +55,8 @@ class Mailing(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="created", verbose_name="Статус")
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name="message")
     recipients = models.ManyToManyField(Recipient, verbose_name="recipients")
+    # Владелец
+    owner = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, blank=True, null=True, verbose_name="owner")
 
     def __str__(self):
         return f"Рассылка {self.pk}"
