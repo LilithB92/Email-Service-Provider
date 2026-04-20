@@ -1,10 +1,18 @@
 {% extends 'base.html' %}
 {% block title %}Клиенты{% endblock %}
+{% block header %}
+<div class="offset-8 col-sm-8">
+    <a href="{%  url 'mailing:recipient_create' %}" class="btn btn-sm btn-outline-primary">
+            + Добавить клиента
+    </a>
+</div>
+
+{% endblock %}
 {% block content %}
 
+ <div class="row justify-content-center">
 {% for recipient in  recipients %}
-  <div class="row">
-      <div class="col-sm-8">
+      <div class="col-sm-6">
         <div class="card bg-dark text-white">
           <div class="card-body">
             <h5 class="card-title">Имя: {{recipient.full_name}}</h5>
@@ -20,9 +28,10 @@
           </div>
         </div>
       </div>
-  </div>
 {% endfor %}
+ </div>
 
+  {% if page_obj.paginator.page_range > 1 %}
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
           <li class="page-item  {% if not  page_obj.has_previous %} disabled {% endif %} ">
@@ -40,4 +49,5 @@
             </li>
       </ul>
     </nav>
+{% endif %}
 {% endblock %}
