@@ -31,7 +31,7 @@
 {% endfor %}
  </div>
 
-  {% if page_obj.paginator.page_range > 1 %}
+
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
           <li class="page-item  {% if not  page_obj.has_previous %} disabled {% endif %} ">
@@ -49,5 +49,5 @@
             </li>
       </ul>
     </nav>
-{% endif %}
+
 {% endblock %}
