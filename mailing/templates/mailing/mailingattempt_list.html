@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Рассылки{% endblock %}
+{% block header %}{% endblock %}
+{% block content %}
+    <div class="row justify-content-center">
+    {% for mailing_attempt in  mailing_attempts %}
+      <div class="col-sm-6">
+        <div class="card bg-dark text-white">
+          <div class="card-body">
+              <h5 class="card-title"> Стату: {{ mailing_attempt.Status }} </h5>
+              <hr>
+              <p class="card-text">Дата и время попытки: {{mailing_attempt.attempt_time}} </p>
+              <p class="card-text">Ответ почтового сервера - {{mailing_attempt.server_response}}</p>
+               <a href="{%  url 'mailing:mailing_detail' mailing_attempt.mailing.pk %}" class="btn btn-sm btn-outline-primary" > Рассылка </a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+
+    <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item  {% if not  page_obj.has_previous %} disabled {% endif %} ">
+        <a  href="?page={{ request.GET.page|add:-1}}" class="page-link">Previous</a>
+      </li>
+      {% for  page in page_obj.paginator.page_range %}
+          <li class="page-item  ">
+            <a  href="?page={{ page }}" class="page-link">
+                {{ page }}
+            </a>
+          </li>
+      {% endfor %}
+        <li class="page-item {% if not page_obj.has_next %} disabled {% endif %} ">
+          <a class="page-link" href="?page={{ request.GET.page|add:1}}">Next</a>
+        </li>
+    </ul>
+    </nav>
+
+{% endblock %}

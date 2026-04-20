@@ -12,6 +12,7 @@ from mailing.forms import MailingForm
 from mailing.forms import MessageForm
 from mailing.forms import RecipientForm
 from mailing.models import Mailing
+from mailing.models import MailingAttempt
 from mailing.models import Message
 from mailing.models import Recipient
 from mailing.services import MailingRecipientService
@@ -143,3 +144,9 @@ class SendMailingDetailView(LoginRequiredMixin, DetailView):
         except Exception as e:
             SendMailing.save_mailing_attempt(send_mailing, pk=pk, ex=e)
         return obj
+
+
+class MailingAttemptList(LoginRequiredMixin, ListView):
+    model = MailingAttempt
+    context_object_name = "mailing_attempts"
+    paginate_by = 2
