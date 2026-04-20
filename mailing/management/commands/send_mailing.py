@@ -1,9 +1,6 @@
-from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
 
-from config import settings
-from mailing.models import Mailing
-from mailing.models import MailingAttempt
+from mailing.services import SendMailing
 
 
 class Command(BaseCommand):
@@ -16,34 +13,17 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         """Отправление mailing через электронную почту"""
         mailing_id = options["mailing_id"]
-        mailing = Mailing.objects.get(pk=mailing_id)
-        recipients = mailing.recipients.all()
-        if mailing.status == "completed":
-            self.stdout.write(self.style.SUCCESS(f'Mailing with pk "{mailing.pk}" is already completed'))
-        else:
-            # Привлекаем клиентов для рассылки
-            for recipient in recipients:
-                try:
-                    send_mail(
-                        mailing.message.subject,
-                        mailing.message.text,
-                        settings.EMAIL_HOST_USER,  # Отправляем письмо
-                        [recipient.email],  # Электронное письмо получателя
-                        fail_silently=False,
-                    )
-                    # Запишите успешную попытку
-                    MailingAttempt.objects.create(
-                        mailing=mailing,
-                        status="success",
-                        server_response="Email sent successfully",
-                    )
-                    # # При необходимости обновите статус рассылки
-                    mailing.status = "completed"
-                    mailing.save()
-                    self.stdout.write(self.style.SUCCESS(f'Successfully sent mailing "{mailing.pk}"'))
-                except Exception as e:
-                    # Запишите неудачную попытку
-                    MailingAttempt.objects.create(mailing=mailing, status="failure", server_response=str(e))
-                    self.stdout.write(
-                        self.style.ERROR(f"Failed to send email to {recipient.email} for mailing {mailing.pk}: {e}")
-                    )
+        send_mailing = SendMailing()
+        recipients = SendMailing.get_active_mailing_recipients(self=send_mailing, pk=mailing_id)
+        for recipient in recipients:
+            try:
+                SendMailing.send_mailing(self=send_mailing, pk=mailing_id, recipient=recipient)
+                # Запишите успешную попытку
+                SendMailing.save_mailing_attempt(self=send_mailing, pk=mailing_id, status="success")
+                self.stdout.write(self.style.SUCCESS(f'Successfully sent mailing "{mailing_id}"'))
+            except Exception as e:
+                SendMailing.save_mailing_attempt(self=send_mailing, pk=mailing_id, ex=e)
+                # Запишите неудачную попытку
+                self.stdout.write(
+                    self.style.ERROR(f"Failed to send email to {recipient.email} for mailing {mailing_id}: {e}")
+                )

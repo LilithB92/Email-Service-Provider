@@ -14,9 +14,9 @@ from mailing.models import Mailing
 from mailing.models import Message
 from mailing.models import Recipient
 from mailing.services import MailingRecipientService
+from mailing.services import SendMailing
 
 
-# Create your views here.
 class HomePageView(TemplateView):
     template_name = "mailing/home.html"
 
@@ -124,3 +124,21 @@ class MailingUpdateView(UpdateView):
 class MailingDeleteView(DeleteView):
     model = Mailing
     success_url = reverse_lazy("mailing:mailing_list")
+
+
+class SendMailingDetailView(DetailView):
+    model = Mailing
+
+    def get_object(self, queryset=None):
+        # 1. Get the object normally
+        obj = super().get_object(queryset)
+        pk = obj.pk
+        send_mailing = SendMailing()
+        recipients = obj.recipients.all()
+        try:
+            for recipient in recipients:
+                SendMailing.send_mailing(send_mailing, pk=pk, recipient=recipient)
+                SendMailing.save_mailing_attempt(send_mailing, pk=pk, status="success")
+        except Exception as e:
+            SendMailing.save_mailing_attempt(send_mailing, pk=pk, ex=e)
+        return obj
