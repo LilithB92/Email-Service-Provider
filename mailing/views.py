@@ -35,6 +35,11 @@ class RecipientList(LoginRequiredMixin, ListView):
     context_object_name = "recipients"
     paginate_by = 2
 
+    def get_queryset(self):
+        """Выбираем только рассылки Владелца."""
+        user = self.request.user
+        return Recipient.objects.filter(owner=user)
+
 
 class RecipientDetailView(LoginRequiredMixin, DetailView):
     model = Recipient
@@ -69,6 +74,11 @@ class MessageList(LoginRequiredMixin, ListView):
     context_object_name = "messages"
     paginate_by = 2
 
+    def get_queryset(self):
+        """Фильтруем queryset по владельцу (owner)"""
+        user = self.request.user
+        return Message.objects.filter(owner=user)
+
 
 class MessageDetailView(LoginRequiredMixin, DetailView):
     model = Message
@@ -102,6 +112,11 @@ class MailingList(LoginRequiredMixin, ListView):
     model = Mailing
     context_object_name = "mailings"
     paginate = 2
+
+    def get_queryset(self):
+        """Фильтруем queryset по владельцу (owner)"""
+        user = self.request.user
+        return Mailing.objects.filter(owner=user)
 
 
 class MailingDetailView(LoginRequiredMixin, DetailView):
