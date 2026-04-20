@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import CreateView
@@ -28,67 +29,67 @@ class HomePageView(TemplateView):
         return context
 
 
-class RecipientList(ListView):
+class RecipientList(LoginRequiredMixin, ListView):
     model = Recipient
     context_object_name = "recipients"
     paginate_by = 3
 
 
-class RecipientDetailView(DetailView):
+class RecipientDetailView(LoginRequiredMixin, DetailView):
     model = Recipient
 
 
-class RecipientCreateView(CreateView):
-    model = Recipient
-    form_class = RecipientForm
-    success_url = reverse_lazy("mailing:recipient_list")
-
-
-class RecipientUpdateView(UpdateView):
+class RecipientCreateView(LoginRequiredMixin, CreateView):
     model = Recipient
     form_class = RecipientForm
     success_url = reverse_lazy("mailing:recipient_list")
 
 
-class RecipientDeleteView(DeleteView):
+class RecipientUpdateView(LoginRequiredMixin, UpdateView):
+    model = Recipient
+    form_class = RecipientForm
+    success_url = reverse_lazy("mailing:recipient_list")
+
+
+class RecipientDeleteView(LoginRequiredMixin, DeleteView):
     model = Recipient
     success_url = reverse_lazy("mailing:recipient_list")
 
 
-class MessageList(ListView):
+class MessageList(LoginRequiredMixin, ListView):
     model = Message
     context_object_name = "messages"
     paginate_by = 2
 
 
-class MessageDetailView(DetailView):
+class MessageDetailView(LoginRequiredMixin, DetailView):
     model = Message
 
 
-class MessageCreateView(CreateView):
-    model = Message
-    form_class = MessageForm
-    success_url = reverse_lazy("mailing:message_list")
-
-
-class MessageUpdateView(UpdateView):
+class MessageCreateView(LoginRequiredMixin, CreateView):
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy("mailing:message_list")
 
 
-class MessageDeleteView(DeleteView):
+class MessageUpdateView(LoginRequiredMixin, UpdateView):
+    model = Message
+    form_class = MessageForm
+    success_url = reverse_lazy("mailing:message_list")
+
+
+class MessageDeleteView(LoginRequiredMixin, DeleteView):
     model = Message
     success_url = reverse_lazy("mailing:message_list")
 
 
-class MailingList(ListView):
+class MailingList(LoginRequiredMixin, ListView):
     model = Mailing
     context_object_name = "mailings"
     paginate = 2
 
 
-class MailingDetailView(DetailView):
+class MailingDetailView(LoginRequiredMixin, DetailView):
     model = Mailing
 
     def get_object(self, queryset=None):
@@ -107,13 +108,13 @@ class MailingDetailView(DetailView):
         object.save()
 
 
-class MailingCreateView(CreateView):
+class MailingCreateView(LoginRequiredMixin, CreateView):
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy("mailing:mailing_list")
 
 
-class MailingUpdateView(UpdateView):
+class MailingUpdateView(LoginRequiredMixin, UpdateView):
     model = Mailing
     form_class = MailingForm
 
@@ -121,12 +122,12 @@ class MailingUpdateView(UpdateView):
         return reverse_lazy("mailing:mailing_detail", kwargs={"pk": self.object.pk})
 
 
-class MailingDeleteView(DeleteView):
+class MailingDeleteView(LoginRequiredMixin, DeleteView):
     model = Mailing
     success_url = reverse_lazy("mailing:mailing_list")
 
 
-class SendMailingDetailView(DetailView):
+class SendMailingDetailView(LoginRequiredMixin, DetailView):
     model = Mailing
 
     def get_object(self, queryset=None):
