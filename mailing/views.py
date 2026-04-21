@@ -124,7 +124,7 @@ class MailingList(LoginRequiredMixin, ListView):
         """Фильтруем queryset по владельцу (owner)"""
         user = self.request.user
         if user.groups.filter(name="Manager").exists():
-            return Mailing.objects.all()
+            return Mailing.objects.filter(is_active=True)
         return Mailing.objects.filter(owner=user, is_active=True)
 
 

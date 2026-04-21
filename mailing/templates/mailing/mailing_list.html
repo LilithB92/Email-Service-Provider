@@ -1,11 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load auth_extras %}
 {% block title %}Рассылки{% endblock %}
 {% block header %}
-<div class="offset-8 col-sm-8">
-    <a href="{%  url 'mailing:mailing_create' %}" class="btn btn-sm btn-outline-primary">
-            + Добавить рассылок
-    </a>
-</div>
+
+   {% if not user|has_group:"Manager" %}
+        <div class="offset-8 col-sm-8">
+            <a href="{%  url 'mailing:mailing_create' %}" class="btn btn-sm btn-outline-primary">
+                    + Добавить рассылок
+            </a>
+        </div>
+    {% endif %}
 
 {% endblock %}
 {% block content %}
@@ -19,7 +22,7 @@
               <p class="card-text">Начала отправки - {{mailing.start_time}} </p>
               <p class="card-text">Конец отправки - {{mailing.end_time}}</p>
               <a href="{%  url 'mailing:mailing_detail' mailing.pk %}" class="btn btn-sm btn-outline-primary" >Посмотреть</a>
-               {% if not user.groupes.name == "Moderator" %}
+               {% if not user|has_group:"Manager" or user == mailing.owner %}
 
 
               <a href="{%  url 'mailing:mailing_update' mailing.pk %}"  class="btn btn-sm btn-outline-secondary">
@@ -32,6 +35,11 @@
                       Отправить Email
               </a>
               {% endif %}
+                {% if perms.mailing.can_disable_mailing %}
+                  <a href="{%  url 'mailing:disable_mailing' mailing.pk %}"  class="btn btn-sm btn-outline-danger">
+                    Отключить
+                  </a>
+                {% endif %}
           </div>
         </div>
       </div>

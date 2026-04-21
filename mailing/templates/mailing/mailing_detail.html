@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %}{% load auth_extras %}
 {% block title %}Рассылка - {{object.message}}{% endblock %}
 {% block content %}
     <div class="row justify-content-center">
@@ -10,6 +10,7 @@
                   <p class="card-text">Начала отправки - {{mailing.start_time}} </p>
                   <p class="card-text">Конец отправки - {{mailing.end_time}}</p>
                   <a href="{%  url 'mailing:mailing_list' %}" class="btn btn-sm btn-outline-primary" >Назад</a>
+                   {% if not user|has_group:"Manager" or user == mailing.owner %}
 
                   <a href="{%  url 'mailing:mailing_update' mailing.pk %}"  class="btn btn-sm btn-outline-secondary">
                     Редактировать
@@ -20,6 +21,12 @@
                   <a href="{%  url 'mailing:send_mailing' mailing.pk %}" class="btn btn-sm btn-outline-success">
                       Отправить Email
                   </a>
+                  {% endif %}
+                   {% if perms.mailing.can_disable_mailing %}
+                  <a href="{%  url 'mailing:disable_mailing' mailing.pk %}"  class="btn btn-sm btn-outline-danger">
+                    Отключить
+                  </a>
+                {% endif %}
               </div>
             </div>
         </div>
