@@ -22,3 +22,6 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+    class Meta:
+        permissions = [("can_block_user", "Can block user")]
