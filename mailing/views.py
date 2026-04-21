@@ -1,6 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.views import View
 from django.views.generic import CreateView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
@@ -120,7 +125,7 @@ class MailingList(LoginRequiredMixin, ListView):
         user = self.request.user
         if user.groups.filter(name="Manager").exists():
             return Mailing.objects.all()
-        return Mailing.objects.filter(owner=user)
+        return Mailing.objects.filter(owner=user, is_active=True)
 
 
 class MailingDetailView(LoginRequiredMixin, DetailView):
@@ -190,3 +195,13 @@ class MailingAttemptList(LoginRequiredMixin, ListView):
     model = MailingAttempt
     context_object_name = "mailing_attempts"
     paginate_by = 2
+
+
+class DisableMailing(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        mailing = get_object_or_404(Mailing, pk=pk)
+        if not request.user.has_perm("mailing.can_disable_mailing"):
+            return HttpResponseForbidden("У вас нет прав для Отключение рассылок.")
+        mailing.is_active = False
+        mailing.save()
+        return redirect(reverse("mailing:mailing_list"))

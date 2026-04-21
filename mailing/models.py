@@ -57,6 +57,7 @@ class Mailing(models.Model):
     recipients = models.ManyToManyField(Recipient, verbose_name="recipients")
     # Владелец
     owner = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, blank=True, null=True, verbose_name="owner")
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return f"Рассылка {self.pk}"
@@ -65,6 +66,7 @@ class Mailing(models.Model):
         verbose_name = "Рассылка"
         verbose_name_plural = "Рассылки"
         permissions = [("can_disable_mailing", "Can disable mailing")]
+        ordering = ["-pk"]
 
 
 class MailingAttempt(models.Model):

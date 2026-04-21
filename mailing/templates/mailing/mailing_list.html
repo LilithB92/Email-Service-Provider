@@ -19,6 +19,8 @@
               <p class="card-text">Начала отправки - {{mailing.start_time}} </p>
               <p class="card-text">Конец отправки - {{mailing.end_time}}</p>
               <a href="{%  url 'mailing:mailing_detail' mailing.pk %}" class="btn btn-sm btn-outline-primary" >Посмотреть</a>
+               {% if not user.groupes.name == "Moderator" %}
+
 
               <a href="{%  url 'mailing:mailing_update' mailing.pk %}"  class="btn btn-sm btn-outline-secondary">
                 Редактировать
@@ -29,6 +31,7 @@
               <a href="{%  url 'mailing:send_mailing' mailing.pk %}" class="btn btn-sm btn-outline-success">
                       Отправить Email
               </a>
+              {% endif %}
           </div>
         </div>
       </div>
@@ -40,7 +43,7 @@
             <a  href="?page={{ request.GET.page|add:-1}}" class="page-link">Previous</a>
           </li>
           {% for  page in page_obj.paginator.page_range %}
-              <li class="page-item  ">
+              <li class="page-item">
                 <a  href="?page={{ page }}" class="page-link">
                     {{ page }}
                 </a>
