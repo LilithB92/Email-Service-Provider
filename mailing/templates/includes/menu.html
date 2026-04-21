@@ -18,6 +18,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownUser1">
             <li><a class="dropdown-item" href="{% url 'users:profile' user.pk %}">Профиль</a></li>
+            <li><a class="dropdown-item" href="{% url 'users:profile_update' user.pk %}">Settings</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{% url 'users:logout'%}">Выход</a></li>
           </ul>

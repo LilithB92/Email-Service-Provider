@@ -15,9 +15,11 @@ from django.views import View
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
+from django.views.generic.edit import UpdateView
 
 from config.settings import EMAIL_HOST_USER
 from users.forms import CustomUserCreationForm
+from users.forms import ProfileUpdateForm
 from users.models import CustomUser
 
 # Create your views here.
@@ -80,6 +82,13 @@ class BlockUserView(LoginRequiredMixin, View):
         user.is_active = False
         user.save()
         return redirect(reverse("users:custom_user_list"))
+
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = CustomUser
+    form_class = ProfileUpdateForm
+    template_name = "users/profile_update.html"
+    success_url = reverse_lazy("users:login")  # Redirect after success
 
 
 class CustomUserList(LoginRequiredMixin, PermissionRequiredMixin, ListView):

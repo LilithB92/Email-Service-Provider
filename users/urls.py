@@ -12,6 +12,7 @@ from .views import BlockUserView
 from .views import ConfirmationEmailView
 from .views import CustomUserList
 from .views import ProfileDetailView
+from .views import ProfileUpdateView
 from .views import RegisterView
 from .views import logout_view
 
@@ -21,6 +22,7 @@ app_name = UsersConfig.name
 urlpatterns = [
     path("customuser_list/", CustomUserList.as_view(), name="custom_user_list"),
     path("customuser_block/<int:pk>/", BlockUserView.as_view(), name="custom_user_block"),
+    path("profile/update/<int:pk>/", ProfileUpdateView.as_view(), name="profile_update"),
     path("register/", RegisterView.as_view(), name="register"),
     path(
         "login/",
