@@ -21,6 +21,7 @@ from mailing.models import Mailing
 from mailing.models import MailingAttempt
 from mailing.models import Message
 from mailing.models import Recipient
+from mailing.services import MailingAttemptService
 from mailing.services import MailingRecipientService
 from mailing.services import SendMailing
 
@@ -239,6 +240,12 @@ class MailingAttemptList(LoginRequiredMixin, ListView):
     model = MailingAttempt
     context_object_name = "mailing_attempts"
     paginate_by = 2
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["attampt_mailing_count"] = MailingAttemptService.get_mailing_attempts_count()
+        context["success_attampt_mailing"] = MailingAttemptService.get_success_attempts_count()
+        return context
 
 
 class DisableMailing(LoginRequiredMixin, View):

@@ -76,5 +76,13 @@ class SendMailing:
             server_response=str(ex))
 
 
+class MailingAttemptService:
 
+    @staticmethod
+    def get_mailing_attempts_count():
+        """"""
+        return MailingAttempt.objects.count()
 
+    @staticmethod
+    def get_success_attempts_count():
+        return MailingAttempt.objects.filter(status="success").count()
