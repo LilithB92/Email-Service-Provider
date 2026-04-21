@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load auth_extras %}
 
 {% block title %}{{object.full_name}}{% endblock %}
 
@@ -12,12 +12,14 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <a href="{%  url 'mailing:recipient_list' %}" class="btn btn-sm btn-outline-primary" >Назад</a>
-                  <a href="#"  class="btn btn-sm btn-outline-secondary">
-                    Редактировать
-                  </a>
-                  <a href="#"  class="btn btn-sm btn-outline-danger">
-                    Удалить
-                  </a>
+                     {% if not user|has_group:"Manager" or user == object.owner %}
+                          <a href="#"  class="btn btn-sm btn-outline-secondary">
+                            Редактировать
+                          </a>
+                          <a href="#"  class="btn btn-sm btn-outline-danger">
+                            Удалить
+                          </a>
+                    {% endif %}
                 </div>
               </div>
           </div>

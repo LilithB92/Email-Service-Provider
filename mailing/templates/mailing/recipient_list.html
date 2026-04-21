@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load auth_extras %}
 {% block title %}Клиенты{% endblock %}
 {% block header %}
 <div class="offset-8 col-sm-8">
@@ -18,6 +18,7 @@
             <h5 class="card-title">Имя: {{recipient.full_name}}</h5>
             <p class="card-text">Комментарий: {{recipient.post|slice:":100"}}...</p>
               <a href="{%  url 'mailing:recipient_detail' recipient.pk %}" class="btn btn-sm btn-outline-primary" >Посмотреть</a>
+               {% if not user|has_group:"Manager" or user == recipient.owner %}
 
               <a href="{%  url 'mailing:recipient_update' recipient.pk %}"  class="btn btn-sm btn-outline-secondary">
                 Редактировать
@@ -25,6 +26,7 @@
               <a href="{%  url 'mailing:recipient_delete' recipient.pk %}"  class="btn btn-sm btn-outline-danger">
                 Удалить
               </a>
+              {% endif %}
           </div>
         </div>
       </div>

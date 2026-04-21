@@ -1,5 +1,4 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
@@ -50,7 +49,7 @@ class RecipientList(LoginRequiredMixin, ListView):
         return Recipient.objects.filter(owner=user)
 
 
-class RecipientDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+class RecipientDetailView(LoginRequiredMixin, DetailView):
     model = Recipient
     permission_required = "mailing.delete_recipient"
 
