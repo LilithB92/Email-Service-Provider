@@ -1,4 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
@@ -48,8 +50,9 @@ class RecipientList(LoginRequiredMixin, ListView):
         return Recipient.objects.filter(owner=user)
 
 
-class RecipientDetailView(LoginRequiredMixin, DetailView):
+class RecipientDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = Recipient
+    permission_required = "mailing.delete_recipient"
 
 
 class RecipientCreateView(LoginRequiredMixin, CreateView):
@@ -70,10 +73,24 @@ class RecipientUpdateView(LoginRequiredMixin, UpdateView):
     form_class = RecipientForm
     success_url = reverse_lazy("mailing:recipient_list")
 
+    def form_valid(self, form):
+        user = self.request.user
+        recipient = form.save()
+        if user == recipient.owner:
+            recipient.save()
+        elif user.groups.filter(name="Manager").exists():
+            return HttpResponseForbidden("У вас нет прав редактирование рассылок.")
+        return super().form_valid(form)
 
-class RecipientDeleteView(LoginRequiredMixin, DeleteView):
+
+class RecipientDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Recipient
     success_url = reverse_lazy("mailing:recipient_list")
+
+    def test_func(self):
+        # Allow delete only for superusers or specific criteria
+        manager = self.request.user.groups.filter(name="Manager").exists()
+        return not manager
 
 
 class MessageList(LoginRequiredMixin, ListView):
@@ -109,10 +126,24 @@ class MessageUpdateView(LoginRequiredMixin, UpdateView):
     form_class = MessageForm
     success_url = reverse_lazy("mailing:message_list")
 
+    def form_valid(self, form):
+        user = self.request.user
+        message = form.save()
+        if user == message.owner:
+            message.save()
+        elif user.groups.filter(name="Manager").exists():
+            return HttpResponseForbidden("У вас нет прав редактирование сообщение.")
+        return super().form_valid(form)
 
-class MessageDeleteView(LoginRequiredMixin, DeleteView):
+
+class MessageDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Message
     success_url = reverse_lazy("mailing:message_list")
+
+    def test_func(self):
+        # Allow delete only for superusers or specific criteria
+        manager = self.request.user.groups.filter(name="Manager").exists()
+        return not manager
 
 
 class MailingList(LoginRequiredMixin, ListView):
@@ -164,13 +195,27 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
     model = Mailing
     form_class = MailingForm
 
+    def form_valid(self, form):
+        user = self.request.user
+        mailing = form.save()
+        if user == mailing.owner:
+            mailing.save()
+        elif user.groups.filter(name="Manager").exists():
+            return HttpResponseForbidden("У вас нет прав редактирование рассылок.")
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse_lazy("mailing:mailing_detail", kwargs={"pk": self.object.pk})
 
 
-class MailingDeleteView(LoginRequiredMixin, DeleteView):
+class MailingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Mailing
     success_url = reverse_lazy("mailing:mailing_list")
+
+    def test_func(self):
+        # Not allow delete managers
+        manager = self.request.user.groups.filter(name="Manager").exists()
+        return not manager
 
 
 class SendMailingDetailView(LoginRequiredMixin, DetailView):

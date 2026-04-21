@@ -1,7 +1,8 @@
 from django.urls import path
 
 from mailing.apps import MailingConfig
-from mailing.views import HomePageView, DisableMailing
+from mailing.views import DisableMailing
+from mailing.views import HomePageView
 from mailing.views import MailingAttemptList
 from mailing.views import MailingCreateView
 from mailing.views import MailingDeleteView

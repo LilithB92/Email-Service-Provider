@@ -2,13 +2,11 @@
 {% block title %}Рассылки{% endblock %}
 {% block header %}
 
-   {% if not user|has_group:"Manager" %}
         <div class="offset-8 col-sm-8">
             <a href="{%  url 'mailing:mailing_create' %}" class="btn btn-sm btn-outline-primary">
                     + Добавить рассылок
             </a>
         </div>
-    {% endif %}
 
 {% endblock %}
 {% block content %}
