@@ -1,21 +1,35 @@
 import secrets
 
+from django import forms
+from django.contrib.auth import get_user_model
 from django.contrib.auth import logout
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.mail import send_mail
+from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import DetailView
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 
 from config.settings import EMAIL_HOST_USER
 from users.forms import CustomUserCreationForm
 from users.models import CustomUser
 
-
 # Create your views here.
+User = get_user_model()
+
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ["first_name", "last_name", "email"]
+
+
 class RegisterView(CreateView):
     model = CustomUser
     form_class = CustomUserCreationForm
@@ -56,3 +70,19 @@ class ProfileDetailView(DetailView):
 def logout_view(request):
     logout(request)
     return redirect(reverse("users:login"))
+
+
+class BlockUserView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        user = get_object_or_404(CustomUser, id=pk)
+        if not request.user.has_perm("users.can_block_user"):
+            return HttpResponseForbidden("У вас нет прав для блокировки пользователя.")
+        user.is_active = False
+        user.save()
+        return redirect(reverse("users:custom_user_list"))
+
+
+class CustomUserList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = CustomUser
+    context_object_name = "users"
+    permission_required = "users.view_customuser"

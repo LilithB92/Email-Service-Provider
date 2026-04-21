@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}{{object.username}}{% endblock %}
+{% block header %}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+{% for user in  users %}
+
+  <div class="col-sm-6">
+    <div class="card bg-dark text-white">
+      <div class="card-body">
+        <h5 class="card-title">{{user.username}}</h5>
+        <h5 class="card-title">{{user.email}}</h5>
+        <h3 class="card-title">{{user.is_active}}</h3>
+           {% if perms.users.can_block_user %}
+              <a href="{%  url 'users:custom_user_block' user.id %}"  class="btn btn-sm btn-outline-danger">
+                Блокировать
+              </a>
+          {% endif %}
+
+      </div>
+    </div>
+  </div>
+
+{% endfor %}
+    </div>
+{% endblock %}
+

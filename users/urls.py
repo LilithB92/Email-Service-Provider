@@ -8,7 +8,9 @@ from django.urls import reverse_lazy
 
 from .apps import UsersConfig
 from .forms import CustomAuthenticationForm
+from .views import BlockUserView
 from .views import ConfirmationEmailView
+from .views import CustomUserList
 from .views import ProfileDetailView
 from .views import RegisterView
 from .views import logout_view
@@ -17,6 +19,8 @@ app_name = UsersConfig.name
 
 
 urlpatterns = [
+    path("customuser_list/", CustomUserList.as_view(), name="custom_user_list"),
+    path("customuser_block/<int:pk>/", BlockUserView.as_view(), name="custom_user_block"),
     path("register/", RegisterView.as_view(), name="register"),
     path(
         "login/",
@@ -25,7 +29,7 @@ urlpatterns = [
     ),
     path("logout/", logout_view, name="logout"),
     path("email_confirm/<str:token>/", ConfirmationEmailView.as_view(), name="email_confirm"),
-    path("profile/<int:pk>", ProfileDetailView.as_view(), name="profile"),
+    path("profile/<int:pk>/", ProfileDetailView.as_view(), name="profile"),
     path(
         "password-reset/",
         PasswordResetView.as_view(
