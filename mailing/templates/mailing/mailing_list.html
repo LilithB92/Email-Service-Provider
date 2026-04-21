@@ -34,23 +34,22 @@
       </div>
     {% endfor %}
     </div>
-{% if page_obj.paginator.page_range > 1 %}
-    <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-      <li class="page-item  {% if not  page_obj.has_previous %} disabled {% endif %} ">
-        <a  href="?page={{ request.GET.page|add:-1}}" class="page-link">Previous</a>
-      </li>
-      {% for  page in page_obj.paginator.page_range %}
-          <li class="page-item  ">
-            <a  href="?page={{ page }}" class="page-link">
-                {{ page }}
-            </a>
+       <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+          <li class="page-item  {% if not  page_obj.has_previous %} disabled {% endif %} ">
+            <a  href="?page={{ request.GET.page|add:-1}}" class="page-link">Previous</a>
           </li>
-      {% endfor %}
-        <li class="page-item {% if not page_obj.has_next %} disabled {% endif %} ">
-          <a class="page-link" href="?page={{ request.GET.page|add:1}}">Next</a>
-        </li>
-    </ul>
+          {% for  page in page_obj.paginator.page_range %}
+              <li class="page-item  ">
+                <a  href="?page={{ page }}" class="page-link">
+                    {{ page }}
+                </a>
+              </li>
+          {% endfor %}
+            <li class="page-item {% if not page_obj.has_next %} disabled {% endif %} ">
+              <a class="page-link" href="?page={{ request.GET.page|add:1}}">Next</a>
+            </li>
+      </ul>
     </nav>
-{% endif %}
+
 {% endblock %}

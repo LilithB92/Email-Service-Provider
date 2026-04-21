@@ -38,6 +38,8 @@ class RecipientList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         """Выбираем только рассылки Владелца."""
         user = self.request.user
+        if user.groups.filter(name="Manager").exists():
+            return Recipient.objects.all()
         return Recipient.objects.filter(owner=user)
 
 
@@ -111,11 +113,13 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
 class MailingList(LoginRequiredMixin, ListView):
     model = Mailing
     context_object_name = "mailings"
-    paginate = 2
+    paginate_by = 2
 
     def get_queryset(self):
         """Фильтруем queryset по владельцу (owner)"""
         user = self.request.user
+        if user.groups.filter(name="Manager").exists():
+            return Mailing.objects.all()
         return Mailing.objects.filter(owner=user)
 
 

@@ -85,4 +85,5 @@ class BlockUserView(LoginRequiredMixin, View):
 class CustomUserList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = CustomUser
     context_object_name = "users"
+    paginate_by = 2
     permission_required = "users.view_customuser"
