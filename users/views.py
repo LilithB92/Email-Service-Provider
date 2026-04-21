@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.core.cache import cache
 from django.core.mail import send_mail
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
@@ -67,6 +68,13 @@ class ConfirmationEmailView(View):
 
 class ProfileDetailView(DetailView):
     model = CustomUser
+
+    def get_queryset(self):
+        queryset = cache.get("profile_detail")
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set("profile_detail", queryset, 60 * 15)  # Кешируем данные на 15 минут
+        return queryset
 
 
 def logout_view(request):
