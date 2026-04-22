@@ -5,7 +5,9 @@ from users.models import CustomUser
 
 # Create your models here.
 class Recipient(models.Model):
-    """Модель для получателей рассылки (клиентов)"""
+    """
+    Сохраняет одну запись о получателе, связанный с:model:`auth.CustomUser`.
+    """
 
     # Поле для email с уникальностью
     email = models.CharField(max_length=255, unique=True)
@@ -26,7 +28,9 @@ class Recipient(models.Model):
 
 
 class Message(models.Model):
-    """Модель для сообщения"""
+    """
+    Сохраняет одну запись о сообщения, связанный с:model:`auth.CustomUser`.
+    """
 
     subject = models.CharField(max_length=255, verbose_name="Тема письма")
     text = models.TextField(verbose_name="Тело письма")
@@ -43,7 +47,9 @@ class Message(models.Model):
 
 
 class Mailing(models.Model):
-    """Модель для рассылки"""
+    """
+    Сохраняет одну запись о рассылки, связанный с  :model:`mailing.Message`,
+    :model:`mailing.Recipient` and :model:`auth.User`. """
 
     STATUS_CHOICES = [
         ("created", "Создана"),
@@ -70,6 +76,9 @@ class Mailing(models.Model):
 
 
 class MailingAttempt(models.Model):
+    """
+       Сохраняет одну запись о попытке рассылки, связанный с  :model:`mailing.Mailing` and :model:`auth.User`.
+    """
     STATUS_CHOICES = [
         ("success", "Успешно"),
         ("failure", "Не успешно"),

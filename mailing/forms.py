@@ -8,6 +8,9 @@ from .models import Recipient
 
 
 class RecipientForm(forms.ModelForm):
+    """
+    Форма для отправки о получателе запросов
+    """
     class Meta:
         model = Recipient
         fields = ["email", "full_name", "post"]
@@ -22,6 +25,9 @@ class RecipientForm(forms.ModelForm):
                 field.widget.attrs["placeholder"] = field.help_text
 
     def clean_email(self):
+        """
+        Проверка для поля электронной почты. Гарантирует, что email имеет "@"
+        """
         email = self.cleaned_data.get("email")
         if "@" not in email:
             raise ValidationError("email не корректно")
@@ -29,6 +35,7 @@ class RecipientForm(forms.ModelForm):
 
 
 class MessageForm(forms.ModelForm):
+    """Форма для отправки о сообщения запросов"""
     class Meta:
         model = Message
         fields = ["subject", "text"]
@@ -43,6 +50,7 @@ class MessageForm(forms.ModelForm):
 
 
 class MailingForm(forms.ModelForm):
+    """Форма для отправки о рассылки запросов"""
     class Meta:
         model = Mailing
         fields = ("start_time", "end_time", "message", "recipients")
@@ -61,6 +69,10 @@ class MailingForm(forms.ModelForm):
                 field.widget.attrs["class"] = "form-control"
 
     def clean(self):
+        """
+        Проверка для даты и время начала отправки даты и времени окончания отправки. Гарантирует,
+         что дата и время начала отправки не после даты и времени окончания отправки.
+        """
         cleaned_data = super().clean()
         start_time = cleaned_data.get("start_time")
         end_time = cleaned_data.get("end_time")

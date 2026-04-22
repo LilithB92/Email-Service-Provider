@@ -4,6 +4,10 @@ from django.db import models
 
 # Create your models here.
 class CustomUser(AbstractUser):
+    """
+       Сохраняет одну запись о пользователе, связанный с  :model:`mailing.Message`,
+       :model:`mailing.Recipient` and :model:`mailing.Mailing`.
+    """
     email = models.EmailField(unique=True, help_text="Введите Ваша почта")
     phone_number = models.CharField(max_length=15, blank=True, null=True, help_text="Введите Ваш номер телефона")
     avatar = models.ImageField(upload_to="users/avatars/", blank=True, null=True)
