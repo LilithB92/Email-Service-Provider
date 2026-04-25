@@ -1,0 +1,55 @@
+{% extends 'base.html' %} {% load auth_extras %}
+{% block title %}Клиенты{% endblock %}
+{% block header %}
+<div class="offset-8 col-sm-8">
+    <a href="{%  url 'mailing:recipient_create' %}" class="btn btn-sm btn-outline-primary">
+            + Добавить клиента
+    </a>
+</div>
+
+{% endblock %}
+{% block content %}
+
+ <div class="row justify-content-center">
+{% for recipient in  recipients %}
+      <div class="col-sm-6">
+        <div class="card bg-dark text-white">
+          <div class="card-body">
+            <h5 class="card-title">Имя: {{recipient.full_name}}</h5>
+            <p class="card-text">Комментарий: {{recipient.post|slice:":100"}}...</p>
+              <a href="{%  url 'mailing:recipient_detail' recipient.pk %}" class="btn btn-sm btn-outline-primary" >Посмотреть</a>
+               {% if not user|has_group:"Manager" or user == recipient.owner %}
+
+              <a href="{%  url 'mailing:recipient_update' recipient.pk %}"  class="btn btn-sm btn-outline-secondary">
+                Редактировать
+              </a>
+              <a href="{%  url 'mailing:recipient_delete' recipient.pk %}"  class="btn btn-sm btn-outline-danger">
+                Удалить
+              </a>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+{% endfor %}
+ </div>
+
+
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+          <li class="page-item  {% if not  page_obj.has_previous %} disabled {% endif %} ">
+            <a  href="?page={{ request.GET.page|add:-1}}" class="page-link">Previous</a>
+          </li>
+          {% for  page in page_obj.paginator.page_range %}
+              <li class="page-item  ">
+                <a  href="?page={{ page }}" class="page-link">
+                    {{ page }}
+                </a>
+              </li>
+          {% endfor %}
+            <li class="page-item {% if not page_obj.has_next %} disabled {% endif %} ">
+              <a class="page-link" href="?page={{ request.GET.page|add:1}}">Next</a>
+            </li>
+      </ul>
+    </nav>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}{% load my_tags %}
+{% block title %}Вход{% endblock %}
+{% block header %}{% endblock %}
+{% block content %}
+<h2>Вход</h2>
+<div class="container ">
+    <div class="row">
+        <div class="col-6 d-flex justify-content-center">
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+                  <form class="row" method="post" action="{% url 'users:login'%}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                      <button type="submit" class="btn btn-primary">Вход</button>
+
+                  </form>
+                    <p><a href="{% url 'users:password_reset' %}">Забыли пароль?</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
