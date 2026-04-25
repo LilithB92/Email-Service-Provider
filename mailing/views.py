@@ -122,10 +122,11 @@ class RecipientUpdateView(LoginRequiredMixin, UpdateView):
        Returns:
            HttpResponse: A redirect to the success_url.
        """
+        pk_from_url = self.kwargs.get('pk')
+        recipient = Recipient.objects.get(pk=pk_from_url)
         user = self.request.user
-        recipient = form.save()
         if user == recipient.owner:
-            recipient.save()
+            form.save()
         elif user.groups.filter(name="Manager").exists():
             return HttpResponseForbidden("У вас нет прав редактирование рассылок.")
         return super().form_valid(form)
@@ -232,10 +233,11 @@ class MessageUpdateView(LoginRequiredMixin, UpdateView):
       Returns:
           HttpResponse: A redirect to the success_url.
       """
+        pk_from_url = self.kwargs.get('pk')
         user = self.request.user
-        message = form.save()
+        message = Message.objects.get(pk=pk_from_url)
         if user == message.owner:
-            message.save()
+            form.save()
         elif user.groups.filter(name="Manager").exists():
             return HttpResponseForbidden("У вас нет прав редактирование сообщение.")
         return super().form_valid(form)
@@ -359,10 +361,11 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
           Returns:
               HttpResponse: A redirect to the success_url.
           """
+        pk_from_url = self.kwargs.get('pk')
         user = self.request.user
-        mailing = form.save()
+        mailing = Mailing.objects.get(pk=pk_from_url)
         if user == mailing.owner:
-            mailing.save()
+            form.save()
         elif user.groups.filter(name="Manager").exists():
             return HttpResponseForbidden("У вас нет прав редактирование рассылок.")
         return super().form_valid(form)
