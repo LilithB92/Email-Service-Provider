@@ -1,0 +1,35 @@
+{% extends 'base.html' %}{% load auth_extras %}
+{% block title %}Рассылка - {{object.message}}{% endblock %}
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-sm-16">
+            <div class="card bg-dark text-white">
+              <div class="card-body">
+                  <h5 class="card-title">{{ mailing.message }} <small class="text-body-secondary">{{ mailing.status }}</small></h5>
+                  <hr>
+                  <p class="card-text">Начала отправки - {{mailing.start_time}} </p>
+                  <p class="card-text">Конец отправки - {{mailing.end_time}}</p>
+                  <a href="{%  url 'mailing:mailing_list' %}" class="btn btn-sm btn-outline-primary" >Назад</a>
+                   {% if not user|has_group:"Manager" or user == mailing.owner %}
+
+                  <a href="{%  url 'mailing:mailing_update' mailing.pk %}"  class="btn btn-sm btn-outline-secondary">
+                    Редактировать
+                  </a>
+                  <a href="{%  url 'mailing:mailing_update' mailing.pk %}"  class="btn btn-sm btn-outline-danger">
+                    Удалить
+                  </a>
+                  <a href="{%  url 'mailing:send_mailing' mailing.pk %}" class="btn btn-sm btn-outline-success">
+                      Отправить Email
+                  </a>
+                  {% endif %}
+                   {% if perms.mailing.can_disable_mailing %}
+                  <a href="{%  url 'mailing:disable_mailing' mailing.pk %}"  class="btn btn-sm btn-outline-danger">
+                    Отключить
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

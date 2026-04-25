@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+{% block content %}
+    <h1 class="cover-heading">Сервис управления рассылками</h1>
+    <p class="lead">Общее количество всех созданных рассылок - {{count_mailings}}</p>
+    <p class="lead">Количество уникальных получателей - {{count_recipients}}</p>
+    <p class="lead">Количество активных рассылок — {{active_mailings_count}}</p>
+{% endblock %}
